@@ -13,6 +13,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository repository;
+
     // Método FindById
     @Override
     public User findById(Integer id) {

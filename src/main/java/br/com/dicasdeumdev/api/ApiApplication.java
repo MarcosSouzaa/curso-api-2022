@@ -10,7 +10,7 @@ public class ApiApplication {
     public static void main(String[] args) {
         SpringApplication.run(ApiApplication.class, args);
 
-         User user = new User(1, "Marcos", "email@email.com", "123");
+         User user = new User(1, "Marcos", "marcos@mail.com", "123");
     }
 
 }
