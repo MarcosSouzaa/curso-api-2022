@@ -1,9 +1,11 @@
 package br.com.dicasdeumdev.api.services.impl;
 
 import br.com.dicasdeumdev.api.domain.User;
+import br.com.dicasdeumdev.api.domain.dto.UserDTO;
 import br.com.dicasdeumdev.api.repositories.UserRepository;
 import br.com.dicasdeumdev.api.services.UserService;
 import br.com.dicasdeumdev.api.services.exceptions.ObjectNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private  ModelMapper mapper;
+
     // Método FindById
     @Override
     public User findById(Integer id) {
@@ -26,5 +31,10 @@ public class UserServiceImpl implements UserService {
 
     public List<User> findAll(){
         return repository.findAll();
+    }
+
+   @Override
+    public User create(UserDTO obj) { //Não salvo DTO, salvo tipo USER, converto aqui em
+        return repository.save(mapper.map(obj, User.class)); //RETORNA ESSA ENTITADE PARA RESOURCE
     }
 }
