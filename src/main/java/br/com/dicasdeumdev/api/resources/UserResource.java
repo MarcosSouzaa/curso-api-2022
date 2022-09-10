@@ -38,4 +38,10 @@ public class UserResource {
                  .fromCurrentRequest().path("/{id}").buildAndExpand(service.create(obj).getId()).toUri();
          return ResponseEntity.created(uri).build();
     }
+    // Endpoit UPDATE para atualizar informações do usuário
+   @PutMapping(value = "/{id}") //Por padrão, sempre passo o ID pela url
+    public ResponseEntity<UserDTO> update(@PathVariable Integer id, @RequestBody UserDTO obj){
+         obj.setId(id);
+         return ResponseEntity.ok().body(mapper.map(service.update(obj), UserDTO.class));
+    }
 }

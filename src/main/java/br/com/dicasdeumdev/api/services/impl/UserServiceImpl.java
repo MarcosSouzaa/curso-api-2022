@@ -40,9 +40,16 @@ public class UserServiceImpl implements UserService {
 
         return repository.save(mapper.map(obj, User.class)); //RETORNA ESSA ENTITADE PARA RESOURCE
     }
+
+    @Override
+    public User update(UserDTO obj) {
+        findByEmail(obj); //Antes de atualizar, vou chamar o método passando obj como parâmetro
+        return repository.save(mapper.map(obj, User.class)); // Salvo as informações do usuário no Banco
+    }
+       //Método findByEmail para atualização do email
     private void findByEmail(UserDTO obj){ //Vou verificar se já existe o email igual "obj" no banco
         Optional<User> user = repository.findByEmail(obj.getEmail()); //FAÇO A BUSCA
-        if(user.isPresent()){ //senão segue a vida
+        if(user.isPresent() && !user.get().getId().equals(obj.getId())){ //senão segue a vida
             throw new DataIntegratyViolationException("E-mail já cadastrado no sistema");
         }
     }
