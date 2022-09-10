@@ -4,6 +4,7 @@ import br.com.dicasdeumdev.api.domain.User;
 import br.com.dicasdeumdev.api.domain.dto.UserDTO;
 import br.com.dicasdeumdev.api.repositories.UserRepository;
 import br.com.dicasdeumdev.api.services.UserService;
+import br.com.dicasdeumdev.api.services.exceptions.DataIntegratyViolationException;
 import br.com.dicasdeumdev.api.services.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,14 @@ public class UserServiceImpl implements UserService {
 
    @Override
     public User create(UserDTO obj) { //Não salvo DTO, salvo tipo USER, converto aqui em
+        findByEmail(obj); //Vai chamar o método e fazer a validação antes de retornar
+
         return repository.save(mapper.map(obj, User.class)); //RETORNA ESSA ENTITADE PARA RESOURCE
+    }
+    private void findByEmail(UserDTO obj){ //Vou verificar se já existe o email igual "obj" no banco
+        Optional<User> user = repository.findByEmail(obj.getEmail()); //FAÇO A BUSCA
+        if(user.isPresent()){ //senão segue a vida
+            throw new DataIntegratyViolationException("E-mail já cadastrado no sistema");
+        }
     }
 }
