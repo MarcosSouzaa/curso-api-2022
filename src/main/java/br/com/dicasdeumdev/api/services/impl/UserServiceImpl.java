@@ -46,7 +46,14 @@ public class UserServiceImpl implements UserService {
         findByEmail(obj); //Antes de atualizar, vou chamar o método passando obj como parâmetro
         return repository.save(mapper.map(obj, User.class)); // Salvo as informações do usuário no Banco
     }
-       //Método findByEmail para atualização do email
+
+    @Override
+    public void delete(Integer id) {
+        findById(id); //verifica se o user existe. Senão lança a excessão
+        repository.deleteById(id);
+    }
+
+    //Método findByEmail para atualização do email
     private void findByEmail(UserDTO obj){ //Vou verificar se já existe o email igual "obj" no banco
         Optional<User> user = repository.findByEmail(obj.getEmail()); //FAÇO A BUSCA
         if(user.isPresent() && !user.get().getId().equals(obj.getId())){ //senão segue a vida
