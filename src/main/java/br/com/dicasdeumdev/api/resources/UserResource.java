@@ -22,6 +22,8 @@ public class UserResource {
     private ModelMapper mapper;
     @Autowired
     private UserService service;
+
+    //FINDBYID Primeiro método
      @GetMapping(value = ID)
     public ResponseEntity<UserDTO>findById(@PathVariable Integer id) {
          return ResponseEntity.ok().body(mapper.map(service.findById(id), UserDTO.class));
